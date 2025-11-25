@@ -10,7 +10,6 @@ class Client(db.Model):
     car_number = db.Column(db.String(10))
 
 
-
 class Parking(db.Model):
     __tablename__ = 'parking'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
