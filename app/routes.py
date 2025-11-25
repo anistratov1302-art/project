@@ -17,7 +17,6 @@ def get_clients():
     } for c in clients])
 
 
-
 @bp.route('/clients/<int:client_id>', methods=['GET'])
 def get_client(client_id):
     client = Client.query.get_or_404(client_id)
