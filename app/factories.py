@@ -6,7 +6,6 @@ from module_30_ci_linters.homework.app.extensions import db
 fake = Faker()
 
 
-
 class ClientFactory(factory.alchemy.SQLAlchemyModelFactory):
     class Meta:
         model = Client
@@ -24,6 +23,7 @@ class ParkingFactory(factory.alchemy.SQLAlchemyModelFactory):
         model = Parking
         sqlalchemy_session = db.session
         sqlalchemy_session_persistence = 'commit'
+        
 
     address = factory.Faker('address')
     opened = factory.Faker('boolean')
