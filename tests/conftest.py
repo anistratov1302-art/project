@@ -4,7 +4,6 @@ from module_30_ci_linters.homework.app.models import Client, Parking, ClientPark
 from datetime import datetime, timedelta
 
 
-
 @pytest.fixture(scope='module')
 def app():
     app = create_app()
