@@ -7,7 +7,6 @@ def test_get_endpoints(client, url):
     assert resp.status_code == 200
 
 
-
 def test_create_client(client):
     data = {'name': 'New', 'surname': 'Client', 'credit_card': '987654321', 'car_number': 'XYZ789'}
     resp = client.post('/clients', json=data)
