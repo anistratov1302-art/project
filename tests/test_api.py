@@ -2,9 +2,9 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    'url', 
+    'url',
     [
-        '/clients', 
+        '/clients',
         '/clients/1',
     ],
 )
@@ -37,7 +37,7 @@ def test_create_parking(client):
 @pytest.mark.parking
 def test_client_enter_parking(client):
     resp = client.post(
-        '/client_parkings', 
+        '/client_parkings',
         json={'client_id': 1, 'parking_id': 1},
     )
     assert resp.status_code == 201
@@ -46,7 +46,7 @@ def test_client_enter_parking(client):
 @pytest.mark.parking
 def test_client_exit_parking(client):
     resp = client.delete(
-        '/client_parkings', 
+        '/client_parkings',
         json={'client_id': 1, 'parking_id': 1},
     )
     assert resp.status_code == 200
