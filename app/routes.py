@@ -13,7 +13,7 @@ def get_clients():
         'name': c.name,
         'surname': c.surname,
         'credit_card': c.credit_card,
-        'car_number': c.car_number
+        'car_number': c.car_number,
     } for c in clients])
 
 
@@ -25,7 +25,7 @@ def get_client(client_id):
         'name': client.name,
         'surname': client.surname,
         'credit_card': client.credit_card,
-        'car_number': client.car_number
+        'car_number': client.car_number,
     })
 
 
@@ -36,7 +36,7 @@ def create_client():
         name=data['name'],
         surname=data['surname'],
         credit_card=data.get('credit_card'),
-        car_number=data.get('car_number')
+        car_number=data.get('car_number'),
     )
     db.session.add(new_client)
     db.session.commit()
@@ -50,7 +50,7 @@ def create_parking():
         address=data['address'],
         opened=data.get('opened', True),
         count_places=data['count_places'],
-        count_available_places=data['count_places']
+        count_available_places=data['count_places'],
     )
     db.session.add(new_parking)
     db.session.commit()
@@ -64,14 +64,16 @@ def client_enter_parking():
     parking = Parking.query.get_or_404(data['parking_id'])
 
     if not parking.opened or parking.count_available_places <= 0:
-        return jsonify({'error': 'Parking closed or no available places'}), 400
+        return jsonify({
+            'error': 'Parking closed or no available places'
+        }), 400
 
     parking.count_available_places -= 1
     client_parking = ClientParking(
         client_id=client.id,
         parking_id=parking.id,
         time_in=datetime.utcnow(),
-        time_out=None
+        time_out=None,
     )
     db.session.add(client_parking)
     db.session.commit()
@@ -84,15 +86,26 @@ def client_exit_parking():
     client = Client.query.get_or_404(data['client_id'])
     parking = Parking.query.get_or_404(data['parking_id'])
 
-    client_parking = ClientParking.query.filter_by(client_id=client.id, parking_id=parking.id, time_out=None).first()
+    client_parking = (
+        ClientParking.query
+        .filter_by(
+            client_id=client.id,
+            parking_id=parking.id,
+            time_out=None,
+        )
+        .first()
+    )
     if not client_parking:
-        return jsonify({'error': 'Entry not found or already exited'}), 404
+        return jsonify({
+            'error': 'Entry not found or already exited'
+        }), 404
 
     if not client.credit_card:
-        return jsonify({'error': 'Payment failed: no credit card attached'}), 400
+        return jsonify({
+            'error': 'Payment failed: no credit card attached'
+        }), 400
 
     client_parking.time_out = datetime.utcnow()
     parking.count_available_places += 1
     db.session.commit()
-
     return jsonify({'message': 'Exit recorded, payment processed'}), 200
