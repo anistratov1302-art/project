@@ -14,7 +14,10 @@ class ClientFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     name = factory.Faker('first_name')
     surname = factory.Faker('last_name')
-    credit_card = factory.LazyFunction(lambda: fake.credit_card_number() if fake.boolean() else None)
+    credit_card = factory.LazyFunction(
+    lambda: fake.credit_card_number() if fake.boolean() else None
+)
+
     car_number = factory.Faker('bothify', text='???-####')
 
 
