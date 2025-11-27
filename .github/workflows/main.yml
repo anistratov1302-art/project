@@ -18,17 +18,20 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: pip install flake8 isort black mypy
+        run: pip install flake8 isort black mypy ruff
       - name: Run flake8
-        run: flake8 . --exit-zero
-      - name: Check import sorting with isort
-        run: isort --check-only .
+        run: flake8 .
+      - name: Fix and check import sorting with isort
+        run: |
+          isort . 
+          isort --check-only .
       - name: Check code format with black
         run: black --check .
       - name: Run mypy static type checking
         run: mypy .
+      - name: Run ruff format (isort + black replacement)
+        run: ruff format --check .
 
-  
   test:
     runs-on: ubuntu-latest
     steps:
