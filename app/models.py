@@ -3,6 +3,7 @@ from .extensions import db
 
 class Client(db.Model):
     __tablename__ = 'client'
+    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(50), nullable=False)
@@ -12,6 +13,7 @@ class Client(db.Model):
 
 class Parking(db.Model):
     __tablename__ = 'parking'
+    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     address = db.Column(db.String(100), nullable=False)
     opened = db.Column(db.Boolean)
@@ -21,13 +23,26 @@ class Parking(db.Model):
 
 class ClientParking(db.Model):
     __tablename__ = 'client_parking'
+    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     parking_id = db.Column(db.Integer, db.ForeignKey('parking.id'))
     time_in = db.Column(db.DateTime)
     time_out = db.Column(db.DateTime)
-
-    __table_args__ = (db.UniqueConstraint('client_id', 'parking_id', name='unique_client_parking'),)
-
-    client = db.relationship('Client', backref=db.backref('client_parkings', lazy=True))
-    parking = db.relationship('Parking', backref=db.backref('client_parkings', lazy=True))
+    
+    __table_args__ = (
+        db.UniqueConstraint(
+            'client_id', 
+            'parking_id', 
+            name='unique_client_parking'
+        ),
+    )
+    
+    client = db.relationship(
+        'Client', 
+        backref=db.backref('client_parkings', lazy=True)
+    )
+    parking = db.relationship(
+        'Parking', 
+        backref=db.backref('client_parkings', lazy=True)
+    )
